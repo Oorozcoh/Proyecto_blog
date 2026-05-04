@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mi Blog</title>
+</head>
+<body>
+    {% extends "blog/base.html" %}
+
+    {% block contenido %}
+
+    <h2>Listado de Posts</h2>
+
+    {% if posts %}
+        <ul>
+            {% for post in posts %}
+                <li>
+                    <strong>{{ post.titulo }}</strong><br>
+                    {{ post.contenido }}<br>
+                    Autor: {{ post.autor }} |
+                    Categoría: {{ post.categoria }}
+                </li>
+                <hr>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No hay posts creados.</p>
+    {% endif %}
+
+    {% endblock %}
+</body>
+</html>

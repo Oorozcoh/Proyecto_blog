@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mi Blog</title>
+</head>
+<body>
+
+    {% extends "blog/base.html" %}
+
+    {% block contenido %}
+
+    <h2>Bienvenido al Blog</h2>
+
+    <p>
+        Este es un blog desarrollado con Django utilizando el patrón
+        Modelo - Vista - Template (MVT).
+    </p>
+
+    <p>
+        Desde este sitio puedes:
+    </p>
+
+    <ul>
+        <li>Crear autores</li>
+        <li>Crear categorías</li>
+        <li>Publicar posts</li>
+        <li>Ver los posts publicados</li>
+        <li>Buscar posts por título</li>
+    </ul>
+
+    <p>
+        Usa el menú superior para navegar por las distintas secciones.
+    </p>
+
+    {% endblock %}    
+</body>
+</html>
