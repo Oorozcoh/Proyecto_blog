@@ -1,8 +1,11 @@
-
 from django.shortcuts import render
-from .models import Autor, Categoria, Post
+from .models import Autor, Categoria, Post, Page
 from .forms import AutorFormulario, CategoriaFormulario, PostFormulario
+from django.views.generic import ListView, DetailView, CreateView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
+def inicio(request):
+    return render(request, "blog/inicio.html")
 
 def crear_autor(request):
     if request.method == "POST":
@@ -68,3 +71,21 @@ def buscar_post(request):
 def listar_posts(request):
     posts = Post.objects.all()
     return render(request, "blog/listar_posts.html", {"posts": posts})
+
+class PageList(ListView):
+    model = Post
+    template_name = "blog/listar_posts.html"
+    context_object_name = "posts"
+
+
+class PageDetail(DetailView):
+    model = Page
+    template_name = "blog/detalle_post.html"
+
+class PageCreate(LoginRequiredMixin, CreateView):
+    model = Page
+    fields = ['titulo', 'subtitulo', 'cuerpo', 'imagen']
+    success_url = "/pages/"
+    
+def about(request):
+    return render(request, "blog/about.html")

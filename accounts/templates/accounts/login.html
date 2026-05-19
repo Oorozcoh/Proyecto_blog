@@ -1,0 +1,105 @@
+{% extends "blog/base.html" %}
+
+{% block contenido %}
+<style>
+    .login-card {
+        max-width: 400px;
+        margin: 60px auto;
+        background: #0f172a;
+        border: 1px solid #1e293b;
+        border-radius: 8px;
+        padding: 32px;
+        color: #f8fafc;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    .login-header {
+        text-align: center;
+        margin-bottom: 24px;
+    }
+    .login-header h2 {
+        margin: 0 0 6px 0;
+        font-size: 1.4rem;
+    }
+    .login-group {
+        margin-bottom: 18px;
+    }
+    .login-group label {
+        display: block;
+        font-size: 0.85rem;
+        color: #94a3b8;
+        margin-bottom: 6px;
+    }
+    .login-group input {
+        width: 100%;
+        padding: 10px 14px;
+        background: #020617;
+        border: 1px solid #334155;
+        border-radius: 6px;
+        color: #f8fafc;
+        box-sizing: border-box;
+    }
+    .login-group input:focus {
+        outline: none;
+        border-color: #38bdf8;
+    }
+    .btn-login {
+        background: #f8fafc;
+        color: #020617;
+        border: none;
+        padding: 12px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        border-radius: 6px;
+        cursor: pointer;
+        width: 100%;
+        margin-top: 10px;
+    }
+    /* 🚨 ESTILO PARA LOS MENSAJES DE ERROR */
+    .error-box {
+        background-color: rgba(239, 68, 68, 0.1);
+        border: 1px solid #ef4444;
+        color: #fca5a5;
+        padding: 12px;
+        border-radius: 6px;
+        margin-bottom: 20px;
+        font-size: 0.85rem;
+        list-style-type: none;
+        padding-left: 12px;
+    }
+</style>
+
+<div class="login-card">
+    <div class="login-header">
+        <h2>Iniciar Sesión</h2>
+    </div>
+
+    {% if form.errors %}
+        <div class="error-box">
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+        
+        <div class="login-group">
+            <label for="id_username">Nombre de usuario</label>
+            {{ form.username }}
+        </div>
+        
+        <div class="login-group">
+            <label for="id_password">Contraseña</label>
+            {{ form.password }}
+        </div>
+
+        <button type="submit" class="btn-login">Ingresar</button>
+    </form>
+</div>
+{% endblock %}

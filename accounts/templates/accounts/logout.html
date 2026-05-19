@@ -1,0 +1,9 @@
+{% extends "blog/base.html" %}
+
+{% block contenido %}
+<div style="margin: 50px;">
+    <h2>Has cerrado sesión correctamente</h2>
+    <p>¡Gracias por visitar nuestro blog!</p>
+    <a href="{% url 'Login' %}">Volver a ingresar</a>
+</div>
+{% endblock %}

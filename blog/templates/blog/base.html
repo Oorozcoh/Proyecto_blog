@@ -1,26 +1,153 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <title>Blog Django</title>
+<style>
+        /* Globales */
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #020617;
+            color: #f8fafc;
+            margin: 0;
+            padding: 0; /* Quitamos el padding del body para que la barra llegue a los bordes */
+        }
+
+        /* 🧩 CONTENEDOR DE LA NAVBAR */
+        .main-header {
+            background-color: #0f172a; /* Gris oscuro que resalta del fondo negro */
+            border-bottom: 1px solid #1e293b; /* Línea divisoria limpia */
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between; /* Separa el logo del menú */
+        }
+
+        .brand-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .brand-section h1 {
+            font-size: 1.2rem;
+            margin: 0;
+            color: #f1f5f9;
+            font-weight: 600;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 16px; /* Espaciado moderno sin usar barras "|" */
+        }
+
+        .nav-links a {
+            color: #94a3b8; /* Gris tenue por defecto */
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: #38bdf8; /* Azul brillante al pasar el mouse */
+        }
+
+        /* Contenedor del contenido del bloque */
+        .content-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Esquina superior derecha integrada */
+        .user-profile-corner {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .avatar-btn {
+            display: block;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid #334155;
+            transition: border-color 0.2s;
+        }
+
+        .avatar-btn:hover {
+            border-color: #38bdf8;
+        }
+
+        .avatar-btn img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .username-tag {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #94a3b8;
+        }
+    </style>
 </head>
 <body>
 
-    <h1>Mi Blog en Django</h1>
+    <header class="main-header">
+        <div class="brand-section">
+            <a href="{% url 'Inicio' %}">
+                <img src="{% static 'blog/img/LogoOscar.png' %}" alt="Logo Blog" style="height: 40px; display: block;">
+            </a>
+            <h1>Mi Blog</h1>
+        </div>
 
-    <nav>
-        <a href="/">Inicio</a> |
-        <a href="/autor/">Crear Autor</a> |
-        <a href="/categoria/">Crear Categoría</a> |
-        <a href="/post/">Crear Post</a> |
-        <a href="/listar_posts/">Ver Posts</a> |
-        <a href="/buscar/">Buscar</a>
-    </nav>
+        <nav class="nav-links">
+            <a href="{% url 'Inicio' %}">Inicio</a>
+            <a href="{% url 'PagesList' %}">Posts</a>
+            <a href="{% url 'About' %}">Acerca de mí</a>
+            <a href="{% url 'BuscarPost' %}">Buscar</a>
+            
+            {% if user.is_authenticated %}
+                <span style="color: #334155;">|</span>
+                
+                <a href="{% url 'FormularioPost' %}">Crear Post</a>
+                <a href="{% url 'FormularioAutor' %}">Crear Autor</a>
+                <a href="{% url 'FormularioSeccion' %}">Categorías</a>
+                <a href="{% url 'MensajesList' %}">Mensajes</a>
+                <a href="{% url 'EnviarMensaje' %}">Enviar</a>
+                
+                <form action="{% url 'Logout' %}" method="POST" style="display:inline; margin: 0;">
+                    {% csrf_token %}
+                    <button type="submit" style="background:none; border:none; color:#ef4444; cursor:pointer; font-family:inherit; font-size:0.9rem; font-weight:500; padding:0;">Salir</button>
+                </form>
 
-    <hr>
+                <div class="user-profile-corner">
+                    <span class="username-tag">{{ user.username }}</span>
+                    <a href="{% url 'EditarPerfil' %}" class="avatar-btn" title="Editar mi Perfil">
+                        {% if user.avatar_profile.imagen %}
+                            <img src="{{ user.avatar_profile.imagen.url }}" alt="Avatar">
+                        {% else %}
+                            <img src="https://api.dicebear.com/7.x/initials/svg?seed={{ user.username }}" alt="Avatar">
+                        {% endif %}
+                    </a>
+                </div>
+            {% else %}
+                <span style="color: #334155;">|</span>
+                <a href="{% url 'Login' %}">Iniciar Sesión</a>
+                <a href="{% url 'Register' %}" style="color: #38bdf8;">Registrarse</a>
+            {% endif %}
+        </nav>
+    </header>
 
-    {% block contenido %}
-    {% endblock %}
+    <div class="content-container">
+        {% block contenido %}
+        {% endblock %}
+    </div>
 
 </body>
 </html>
